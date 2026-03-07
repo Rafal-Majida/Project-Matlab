@@ -1,0 +1,29 @@
+% Generate noisy sine wave
+t = linspace(-pi, pi, 100);
+rng default;  % initialize random number generator
+x = sin(t) + 0.25*rand(size(t));
+
+% Choose 6 window sizes
+windowSizes = [5, 15, 20, 40, 60, 80];
+
+% Loop through the 6 window sizes
+for k = 1:length(windowSizes)
+    windowSize = windowSizes(k);
+    b = (1/windowSize) * ones(1, windowSize);
+    a = 1;
+    
+    y = filter(b, a, x);
+    
+    % Create figure
+    figure;
+    plot(t, x, 'LineWidth', 6);  % original noisy signal
+    hold on;
+    plot(t, y, 'LineWidth', 6);  % filtered signal
+    grid on;
+    
+    % Labels, title, legend with font size 24
+    xlabel('Time', 'FontSize', 24);
+    ylabel('Amplitude', 'FontSize', 24);
+    title(['Moving Average Filter - Window Size = ', num2str(windowSize)], 'FontSize', 24);
+    legend('Input Data', 'Filtered Data', 'FontSize', 24);
+end
